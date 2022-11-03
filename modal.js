@@ -51,6 +51,8 @@ function onSubmit(event) {
 
   let validEmail = /[a-z0-9_\-\.]+@[a-z0-9_\-\.]+\.[a-z]+/i;
 
+  let isValid = true;
+  
   let today = new Date();// variable date du jour 
   let birthday = new Date(birthdate.value); // variable date anniversaire
   let realDate = (today.getTime()-birthday.getTime()); // variable différence date du jour / date anniversaire
@@ -61,6 +63,7 @@ function onSubmit(event) {
     firstError.style.fontSize = "14px"; 
     firstError.style.color ="white"; 
     firstError.style.background ="red";  
+    isValid = false;  
   }
   else{
     firstError.textContent ="";
@@ -73,6 +76,7 @@ function onSubmit(event) {
     lastError.style.fontSize = "14px"; 
     lastError.style.color ="white"; 
     lastError.style.background ="red";
+    isValid = false;  
     
   }
   else{
@@ -90,6 +94,7 @@ function onSubmit(event) {
     emailError.style.fontSize = "14px"; 
     emailError.style.color ="white"; 
     emailError.style.background ="red";
+    isValid = false;  
 
   } 
  
@@ -99,13 +104,15 @@ function onSubmit(event) {
     birthdateError.style.fontSize = "14px"; 
     birthdateError.style.color ="white";
     birthdateError.style.background ="red";  
+    isValid = false;  
  
   }
   else if (realDate < "0") {// date supérieure à la date du jour
-    birthdateError.textContent ="Vous devez entrer votre date de naissance.";
+    birthdateError.textContent ="Vous devez rentrer un date correct.";
     birthdateError.style.fontSize = "14px"; 
     birthdateError.style.color ="white";
     birthdateError.style.background ="red";  
+    isValid = false;  
   }
   else{
     birthdateError.textContent =" ";//  Pas de message d'erreur
@@ -117,6 +124,7 @@ function onSubmit(event) {
     quantityError.style.fontSize = "14px"; 
     quantityError.style.color ="white";
     quantityError.style.background ="red";  
+    isValid = false;  
   }
   else{
     quantityError.textContent =" ";//  Pas de message d'erreur
@@ -128,7 +136,7 @@ function onSubmit(event) {
     // pas de message d'erreur, une ville est selectionnée
   }
   else{
-   
+   isValid = false;  
     locationError.textContent ="Vous devez choisir une option.";
     locationError.style.fontSize = "14px"; 
     locationError.style.color ="white";
@@ -139,7 +147,7 @@ function onSubmit(event) {
   //   Pas de message d'erreur
   }
   else{
-    
+    isValid = false;  
     checkboxError.textContent ="Vous devez vérifier que vous acceptez les termes et conditions.";
     checkboxError.style.fontSize = "14px"; 
     checkboxError.style.color ="white"; 
@@ -147,12 +155,11 @@ function onSubmit(event) {
   } 
   event.preventDefault();
   //Ajouter confirmation quand envoi réussi #4
-  if (first.value && last.value && email.value && birthdate.value && quantity.value 
-    && ((loc1.checked) || (loc2.checked) || (loc3.checked) || (loc4.checked) || (loc5.checked) || (loc6.checked)) 
-    && checkbox1.checked === true) 
+  if (isValid) 
     { 
       form.style.display="none";
       endClose.style.display = "block";
+      form.reset();
       endClose.addEventListener("click", closeModal);
     }
 }
@@ -176,7 +183,7 @@ function launchModal() {
   form.style.display="block";
   modalbg.style.display = "block";
   endClose.style.display = "none";
-  form.reset();
+ 
  
 }
 
