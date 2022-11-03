@@ -16,7 +16,7 @@ const formData = document.querySelectorAll(".formData");
 
 
 // ----------------déclaration des constantes et récupération des données du formulaire
-const form =  document.getElementById("form");  
+const form =  document.getElementById("form"); 
 const first =  document.getElementById("first");
 const firstError =  document.getElementById("error_first");
 const last =  document.getElementById("last")
@@ -38,15 +38,18 @@ const checkbox1 =  document.getElementById("checkbox1");
 const checkboxError =  document.getElementById("error_checkbox");
 // ----------------déclaration des constantes et récupération des données de validation et fermeture du formulaire
 const validForm =  document.getElementById("validation");
-const endClose =  document.getElementById("endclose");
+const endClose =  document.querySelector(".endclose-modal");
 const modalBody =  document.querySelector(".modal-body");
 
 // ----------------écoute de l'event 'submit'
-form.addEventListener("submit", validError);
+ 
+form.addEventListener("submit", onSubmit);
  
 
 //  Ajouter validation ou messages d'erreur #3 
-function validError(event) {
+function onSubmit(event) {
+
+  let validEmail = /[a-z0-9_\-\.]+@[a-z0-9_\-\.]+\.[a-z]+/i;
 
   let today = new Date();// variable date du jour 
   let birthday = new Date(birthdate.value); // variable date anniversaire
@@ -77,7 +80,10 @@ function validError(event) {
     // Si nombre de caractères suffisant, pas de message d'erreur
 
   }
-  if (email.validity.valueMissing) {
+  if (validEmail.test(email.value)) {
+    emailError.textContent =" ";//  Pas de message d'erreur
+  }
+  else  {
     // If the field is empty,
     // display the following error message.
     emailError.textContent = "Vous devez renseigner une adresse mail.";
@@ -85,17 +91,8 @@ function validError(event) {
     emailError.style.color ="white"; 
     emailError.style.background ="red";
 
-  } else if (email.validity.typeMismatch) {
-    // If the field doesn't contain an email address,
-    // display the following error message.
-    emailError.textContent = "Vous devez renseigner une adresse mail.";
-    emailError.style.fontSize = "14px"; 
-    emailError.style.color ="white"; 
-    emailError.style.background ="red";
-  }
-  // Set the styling appropriately
-  emailError.className = "error active";
-
+  } 
+ 
   
   if (birthdate.value ===''){// pas de caractère
     birthdateError.textContent ="Vous devez entrer votre date de naissance.";
@@ -149,26 +146,21 @@ function validError(event) {
     checkboxError.style.background ="red";  
   } 
   event.preventDefault();
-}
-
-//Ajouter confirmation quand envoi réussi #4
-
-validForm.addEventListener("click", function () {
+  //Ajouter confirmation quand envoi réussi #4
   if (first.value && last.value && email.value && birthdate.value && quantity.value 
     && ((loc1.checked) || (loc2.checked) || (loc3.checked) || (loc4.checked) || (loc5.checked) || (loc6.checked)) 
     && checkbox1.checked === true) 
     { 
-      modalBody.innerHTML = " Merci ! Votre réservation a bien été enregistrée.";
-      modalBody.style.height = "600px";
-      modalBody.style.paddingTop = "250px";
-      modalBody.style.paddingLeft = "100px";
-      modalBody.style.paddingRight = "100px";
+      form.style.display="none";
       endClose.style.display = "block";
       endClose.addEventListener("click", closeModal);
-     
     }
-  }
-  )
+}
+
+
+
+
+
 
 //TODO : fermer la modale #1
 const closeBtn = document.querySelectorAll(".close");
@@ -181,13 +173,17 @@ closeBtn.forEach((btn) => btn.addEventListener("click", closeModal));
 
 // launch modal form
 function launchModal() {
+  form.style.display="block";
   modalbg.style.display = "block";
+  endClose.style.display = "none";
+  form.reset();
+ 
 }
-
 
 // close modal form
 function closeModal() {
   modalbg.style.display = "none";
+  
 }
 
 
