@@ -310,6 +310,8 @@ input[data-error]::after {
   left: 21%;
   top: 19%;
 }
+
+/* Style span button close */
 .close {
   position: absolute;
   right: 15px;
